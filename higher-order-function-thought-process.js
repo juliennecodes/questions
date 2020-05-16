@@ -40,3 +40,8 @@ function getNthLetter(3, "komquat") {
 //Like this?
 createSafeVersion(getNthLetter)(3, "komquat")();
 //Is it called automatically?
+
+//Just to shed some light on why my thought process is like this, the instructor
+//I was watching said to think of the numerous parenthesis as going inward another
+//level.
+//My thinking is, each level is earmarked by the return keyword.
