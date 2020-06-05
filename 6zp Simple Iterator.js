@@ -32,3 +32,10 @@ dessertIterator.next();//{value: 0, done: false}
 dessertIterator.next();//{value: 1, done: false}
 dessertIterator.next();//{value: 2, done: false}
 dessertIterator.next();//{done: true}
+
+//------------------------------------------------------------------------------
+//increment operator
+nextIndex = nextIndex + 1;  //{value: 1, done: false}
+nextIndex+=1;               //{value: 1, done: false}
+nextIndex++;                //{value: 0, done: false}
+++nextIndex                 //{value: 1, done: false}
