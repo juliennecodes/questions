@@ -1,6 +1,4 @@
 "use strict";
-//nested error
-//functions should depend on each other
 
 class DragRacer{
   constructor(name){
@@ -10,21 +8,33 @@ class DragRacer{
 
 //------------------------------------------------------------------------------
 function winAllStars(dragRacer){
-  if (typeof dragRacer === undefined){
-    throw new Error(`${dragRacer}? Who or what is that?`);
-  }
+  try{
+    if (typeof dragRacer === undefined){
+      throw new Error;
+    }
 
-  dragRacer.allStarsWinner = true;
+    dragRacer.allStarsWinner = true;
+  } catch(e){
+    return `${dragRacer}? Who or what is that?`;
+  }
 }
 
 //------------------------------------------------------------------------------
 let hallOfFame = [];
 
+class NotAWinnerError extends Error{}
+
 function inductToHallOfFame(dragRacer){
-  if (wonAllStars(dragRacer)){
-    if (alreadyHallOfFamer(dragRacer)) return `${dragRacer.name} is already in the hall of fame.`;
-    if(typeof dragRacer.name === "string") hallOfFame.push(dragRacer.name); //is it okay to mutate when you only need one value? if not, what are the advantages of creating a new version?
-    else throw new Error(`${dragRacer} is not a drag race star.`);
+  try {
+    if (wonAllStars(dragRacer)){
+      if (alreadyHallOfFamer(dragRacer)) return `${dragRacer.name} is already in the hall of fame.`;
+      if(isDragRaceStar(dragRacer)) hallOfFame.push(dragRacer.name); //is it okay to mutate when you only need one value? if not, what are the advantages of creating a new version?
+      else throw new NotADragRaceStar;
+    }
+    else throw new NotAWinnerError;
+  } catch (e){
+    if (e instanceof NotAWinnerError ) return `${dragRacer.name} is not an all stars winner.`;
+    else return `${dragRacer} is not a drag race star.`; //I don't know how to get what you typed instead of undefined
   }
 }
 
@@ -34,6 +44,10 @@ function wonAllStars(dragRacer){
 
 function alreadyHallOfFamer(dragRacer){
   return hallOfFame.includes(dragRacer.name);
+}
+
+function isDragRaceStar(dragRacer){
+  return typeof dragRacer.name === "string"
 }
 //------------------------------------------------------------------------------
 function listHallOfFamers(){
@@ -51,48 +65,27 @@ let airconditioner = {} //not a dragRacer
 
 
 //------------------------------------------------------------------------------
-//Where do you put the try catch block?
-//should I place the try block in the function at the top of the stack?
-try {
-  winAllStars(alaska);
-  inductToHallOfFame(alaska);
-  listHallOfFamers();
-} catch(e){
-  console.log(e);
-}
+winAllStars(alaska);
+inductToHallOfFame(alaska);
+listHallOfFamers();
+
 
 //error non all stars winner
-try {
-  inductToHallOfFame(ben);
-  listHallOfFamers();
-} catch(e){
-  console.log(e);
-}
+inductToHallOfFame(ben);
+listHallOfFamers();
 //no error messages, weeded out by the conditional check of whether they're a winner
 
 //error not a dragRacer
-try {
-  winAllStars(airconditioner)
-  inductToHallOfFame(airconditioner);
-  listHallOfFamers();
-} catch(e){
-  console.log(e);
-}
+winAllStars(airconditioner);
+inductToHallOfFame(airconditioner);
+listHallOfFamers();
 
 //error declared binding but no value
-try {
-  winAllStars(scrunchie)
-  inductToHallOfFame(scrunchie);
-  listHallOfFamers();
-} catch(e){
-  console.log(e);
-}
+winAllStars(scrunchie);
+inductToHallOfFame(scrunchie);
+listHallOfFamers();
 
 //error undeclared binding
-try {
-  winAllStars(yellow)
-  inductToHallOfFame(yellow);
-  listHallOfFamers();
-} catch(e){
-  console.log(e);
-}
+winAllStars(yellow);
+inductToHallOfFame(yellow);
+listHallOfFamers();
