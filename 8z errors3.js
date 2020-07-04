@@ -7,18 +7,24 @@ class DragRacer{
 }//class DragRacer
 
 //------------------------------------------------------------------------------
+class NotADragRaceStar extends Error{}
+
 function winAllStars(dragRacer){
   try{
-    if (typeof dragRacer === "undefined"){
-      throw new Error;
-    }
+    if (typeof dragRacer === "undefined")throw new Error;
+
+    if (isNotADragRaceStar(dragRacer)) throw new NotADragRaceStar;
 
     dragRacer.allStarsWinner = true;
   } catch(e){
+    if (e instanceof NotADragRaceStar) return `${dragRacer} is not a drag race star.`;
     return `${dragRacer}? Who or what is that?`;
   }
 }
 
+function isNotADragRaceStar(dragRacer){
+  return !typeof dragRacer.name === "string"
+}
 //------------------------------------------------------------------------------
 let hallOfFame = [];
 
@@ -27,14 +33,14 @@ class NotAWinnerError extends Error{}
 function inductToHallOfFame(dragRacer){
   try {
     if (wonAllStars(dragRacer)){
-      if (alreadyHallOfFamer(dragRacer)) return `${dragRacer.name} is already in the hall of fame.`;
-      if(isDragRaceStar(dragRacer)) hallOfFame.push(dragRacer.name); //is it okay to mutate when you only need one value? if not, what are the advantages of creating a new version?
-      else throw new NotADragRaceStar;
+      if (alreadyHallOfFamer(dragRacer)) throw new Error;
+      hallOfFame.push(dragRacer.name); //is it okay to mutate when you only need one value? if not, what are the advantages of creating a new version?
     }
+
     else throw new NotAWinnerError;
   } catch (e){
     if (e instanceof NotAWinnerError ) return `${dragRacer.name} is not an all stars winner.`;
-    else return `${dragRacer} is not a drag race star.`; //I don't know how to get what you typed instead of undefined
+    return `${dragRacer.name} is already in the hall of fame.`;
   }
 }
 
@@ -44,10 +50,6 @@ function wonAllStars(dragRacer){
 
 function alreadyHallOfFamer(dragRacer){
   return hallOfFame.includes(dragRacer.name);
-}
-
-function isDragRaceStar(dragRacer){
-  return typeof dragRacer.name === "string"
 }
 //------------------------------------------------------------------------------
 function listHallOfFamers(){
