@@ -9,7 +9,7 @@ class DragRacer{
 //------------------------------------------------------------------------------
 function winAllStars(dragRacer){
   try{
-    if (typeof dragRacer === undefined){
+    if (typeof dragRacer === "undefined"){
       throw new Error;
     }
 
