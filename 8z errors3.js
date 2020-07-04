@@ -23,24 +23,30 @@ function winAllStars(dragRacer){
 }
 
 function isNotADragRaceStar(dragRacer){
-  return !typeof dragRacer.name === "string"
+  return !(typeof dragRacer.name === "string");
 }
 //------------------------------------------------------------------------------
 let hallOfFame = [];
 
+class AlreadyAWinner extends Error{}
 class NotAWinnerError extends Error{}
 
 function inductToHallOfFame(dragRacer){
   try {
-    if (wonAllStars(dragRacer)){
-      if (alreadyHallOfFamer(dragRacer)) throw new Error;
-      hallOfFame.push(dragRacer.name); //is it okay to mutate when you only need one value? if not, what are the advantages of creating a new version?
+    if (isADragRaceStar(dragRacer)) {
+      if (wonAllStars(dragRacer)){
+        if (alreadyHallOfFamer(dragRacer)) throw new AlreadyAWinner;
+        hallOfFame.push(dragRacer.name); //is it okay to mutate when you only need one value? if not, what are the advantages of creating a new version?
+      }
+      else throw new NotAWinnerError;
     }
 
-    else throw new NotAWinnerError;
+    else throw new Error;
+
   } catch (e){
+    if (e instanceof AlreadyAWinner) return `${dragRacer.name} is already in the hall of fame.`;
     if (e instanceof NotAWinnerError ) return `${dragRacer.name} is not an all stars winner.`;
-    return `${dragRacer.name} is already in the hall of fame.`;
+    else return `${dragRacer} is not a drag race star.`;
   }
 }
 
@@ -50,6 +56,10 @@ function wonAllStars(dragRacer){
 
 function alreadyHallOfFamer(dragRacer){
   return hallOfFame.includes(dragRacer.name);
+}
+
+function isADragRaceStar(dragRacer){
+  return typeof dragRacer.name === "string";
 }
 //------------------------------------------------------------------------------
 function listHallOfFamers(){
@@ -72,22 +82,19 @@ inductToHallOfFame(alaska);
 listHallOfFamers();
 
 
-//error non all stars winner
+//error - non all stars winner
 inductToHallOfFame(ben);
-listHallOfFamers();
-//no error messages, weeded out by the conditional check of whether they're a winner
 
-//error not a dragRacer
+//error - not a dragRacer
 winAllStars(airconditioner);
 inductToHallOfFame(airconditioner);
-listHallOfFamers();
 
-//error declared binding but no value
+//error - declared binding but no value
 winAllStars(scrunchie);
-inductToHallOfFame(scrunchie);
+inductToHallOfFame(scrunchie); //needs to be caught
 listHallOfFamers();
 
-//error undeclared binding
-winAllStars(yellow);
+//error - undeclared binding
+winAllStars(yellow); //problem evaluating yellow
 inductToHallOfFame(yellow);
 listHallOfFamers();
