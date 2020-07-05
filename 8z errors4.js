@@ -111,7 +111,7 @@ function borrowBook(account, book){
     // book.borrow();
     console.log("Book borrowed");
   } catch(e){
-    console.log(e);
+    return `${e}`;
   }
 }
 
