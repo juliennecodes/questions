@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    .textarea{
+      width: 320px;
+      height: 160px;
+    }
+    </style>
+  </head>
+  <body>
+    <textarea class="textarea" placeholder="Type something here..."></textarea>
+  </body>
+
+  <script>
+  let textarea = document.querySelector(".textarea");
+  let timeout;
+
+  textarea.addEventListener("input", x);
+  //event fires when the text area value changes
+  //when you type something, x is called
+
+  function x(){
+    clearTimeout(timeout);
+    //clears undefined timeout at first
+    //clears previous timeout, which was assigned the value of
+    //scheduling a console log in 3 seconds. It was already executed
+    //so it doesn't really do anything, it just clears the previous value.
+    timeout = setTimeout(()=>console.log("Typed"), 3000);
+    //timeout schedules a console log in 3 seconds when the function is called
+    //but when is timeout called?
+  }
+
+  //what does clearing timeout on an undefined do?
+  //apparently no effect
+
+  //what's the lesson here?
+
+  //but why is clearTimeout needed when it gets reassigned a new timeout anyways?
+  //Okay, so I disabled clearTimeout just to see what the function does without it
+  //What ended up happening is that the console log happened for each letter pressed
+
+  //with clearTimeout, typing 16 letters creates one console log
+  //without clearTimeout, typing 16 letters creates  sixteen console logs
+  //so I guess each typed character creates an input event? one for each textarea content change
+  //how exactly does clearTimeout reduce 16 textarea changes into one input event?
+
+  //also, I typed continuously for 5 seconds
+  //it created a console log 3 seconds after I stopped typing
+
+  //I typed continuously for a long time and it created a console log 3 seconds after I stopped typing
+  </script>
+</html>

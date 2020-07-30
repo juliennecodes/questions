@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    .textarea{
+      width: 320px;
+      height: 160px;
+    }
+    </style>
+  </head>
+  <body></body>
+
+  <script>
+  //MOUSEMOVE
+  //what does ${scheduled.pageX} evaluate to?
+  //what is pageX
+
+  //pageX - contains the event’s x coordinates, in pixel,
+  //relative to the top left corner of the whole document,
+  //which stays consistent even when the window has been scrolled
+
+  let scheduled = null;
+
+  window.addEventListener("mousemove", x);
+  //when the mouse moves in the window, x is called
+
+  function x(event) {
+    if (scheduled === null) setTimeout(displayCoordinates, 3000);
+    //scheduled is null, therefore, setTimeout schedules displayCoordinates to happen in 3 seconds
+    scheduled = event;
+    //scheduled is now the event object, which is mousemove
+    //oh wait, is it mousemove in the original mousemove event or is it continually updated?
+    //it is the mousemove after the 3 seconds but how?
+    //if the event object passed is the event object in the eventlistener,
+    //shouldn't it contain information from the original mousemove?
+  }
+
+  function displayCoordinates(){
+    document.body.textContent = `Mouse at ${scheduled.pageX}, ${scheduled.pageY}`;
+    scheduled = null;
+  }
+
+  </script>
+</html>
