@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <canvas width="200" height="200"></canvas>
+  <script>
+
+    const results = [
+      {name: "Satisfied", count: 1043, color: "lightblue"},
+      {name: "Neutral", count: 563, color: "lightgreen"},
+      {name: "Unsatisfied", count: 510, color: "pink"},
+      {name: "No comment", count: 175, color: "silver"}
+      ];
+
+    let cx = document.querySelector("canvas").getContext("2d");
+    //creates a context object
+
+    let total = results.reduce((sum, {count}) => sum + count, 0);
+    //{results[0]},
+    //how is it accessing the count property of the object?
+    //shouldn't it be results[0].count?
+
+    //okay, so the initial value is
+    // {name: "Satisfied", count: 1043, color: "lightblue"}
+    //this is sum
+
+    //{count}
+    //is this an index like in map? but no, that doesn't make sense, it'll be 0 if that is the case
+    //is it the next object?
+    //why is it bundled inside an r brace? will it be putting an object inside an object?
+    //how are you adding an object without accessing the properties?
+    //I mean it works out but how?
+
+    // Start at the top
+    let currentAngle = -0.5 * Math.PI;
+    //why the negative number?
+    //-1.57
+    //quarter circle from where
+    //it starts at the right and -0.5 is counterclockwise?
+
+    for (let result of results) {
+      let sliceAngle = (result.count / total) * 2 * Math.PI;
+      //result count divided by the total results
+      //multiplied by the circle
+
+      cx.beginPath();
+      //create a path
+
+      cx.arc(100, 100, 100, currentAngle, currentAngle + sliceAngle); currentAngle += sliceAngle;
+      //create an arc
+      // center=100,100, radius=100
+      // from current angle, clockwise by slice's angle
+
+      //from current angle, is the negative necessary?
+      //to slice's angle, which only takes its share of area according to the result
+      //calculates the proportion and translates that proportion if it were a circle
+
+      cx.lineTo(100, 100);
+      //creates a line segment from the end point of the previous subpath
+      //the end point is x:100, y:100, which is the center of the circle
+
+      cx.fillStyle = result.color;
+      //modifies the property of the shape's fillStyle by accessing the designated colour
+      cx.fill();
+      //fills the shape
+    }
+  </script>
+</body>
+
+</html>
